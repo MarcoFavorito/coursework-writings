@@ -1,0 +1,15 @@
+*.swp
+*.aux
+*.log
+*.bbl
+*.blg
+*.synctex.gz
+*.nlo
+*.out
+
+*.toc
+
+*.nav
+*.snm
+*.vrb
+
