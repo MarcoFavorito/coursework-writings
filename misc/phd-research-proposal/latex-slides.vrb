@@ -1,0 +1,19 @@
+\frametitle{RLTG (Reinforcement Learning for Temporal Goals)}
+Reinforcement Learning Python framework that implements our approach
+	\begin{itemize}
+		\item Depends on \texttt{flloat} for the construction of $\automaton_{\varphi_i}$
+		\item Works also for classic RL
+		\item Highly customizable, uses OpenAI Gym interface
+	\end{itemize}
+	Example (in pseudocode):
+\begin{lstlisting}[language=Python, style=Python, numbers=none, escapechar = £]
+env = GymEnvironment()           # a Gym environment
+agent = TGAgent(                 # the "temporal goal" agent
+    FeatureExtractor(...),       # generates the agent's space
+    Brain(...), #abstraction of RL algorithms (e.g. Sarsa)
+    [TemporalGoal(£$\varphi, r$£), ...] # list of temp. goal managers
+)
+trainer = TGTrainer(env, agent, stop_conditions=..., ...)
+trainer.main(...)                # starts the learning process
+
+\end{lstlisting}

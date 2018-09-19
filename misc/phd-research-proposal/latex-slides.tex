@@ -1,0 +1,383 @@
+\documentclass{beamer}
+%
+% Choose how your presentation looks.
+%
+% For more themes, color themes and font themes, see:
+% http://deic.uab.es/~iblanes/beamer_gallery/index_by_theme.html
+%
+
+\mode<presentation>
+{
+%  \usetheme{Berlin}      % or try Darmstadt, Madrid, Warsaw, ...
+	\usetheme[
+		bullet=circle,                  % Use circles instead of squares for bullets
+		titleline=false,                % Show a line below the frame
+		alternativetitlepage=true,      % Use the fancy title
+		titlepagelogo=logo-sapienza,    % Logo for the first slide
+		watermark=watermark-sapienza,   % Watermark used in every slide
+		watermarkheight=20px,           % Desired height of the watermark
+		watermarkheightmult=6,          % Watermark image is actually x times bigger
+		displayauthoronfooter=true		
+	]{Roma}
+%  \usecolortheme{beaver} % or try albatross, beaver, crane, ...
+%  \usefonttheme{default}  % or try serif, structurebold, ...
+%  \setbeamertemplate{navigation symbols}{}
+%  \setbeamertemplate{caption}[numbered]
+} 
+
+
+
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+
+%other packages...
+\usepackage{hyperref}
+\usepackage{xspace}
+\usepackage{tabularx} % in the preamble
+%\usepackage{subfigure}
+\usepackage{subfig}
+%\usepackage{chngcntr}
+%\counterwithin{subfigure}{figure}
+% The algorithm packages have to be after hyperref.
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{multirow}
+\usepackage{animate}
+\usepackage{tasks}
+
+\usepackage{adjustbox}
+\usepackage{multimedia}
+%\usepackage{movie15}
+
+
+
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+% For every picture that defines or uses external nodes, you'll have to
+% apply the 'remember picture' style. To avoid some typing, we'll apply
+% the style to all pictures.
+\tikzstyle{every picture}+=[remember picture]
+
+% By default all math in TikZ nodes are set in inline mode. Change this to
+% displaystyle so that we don't get small fractions.
+\everymath{\displaystyle}
+\tikzstyle{na} = [baseline=-.5ex]
+
+
+\input{macros}
+
+
+\usepackage{listings}
+% Custom colors
+\usepackage{color}
+\definecolor{deepblue}{rgb}{0,0,0.5}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+
+\usepackage{accsupp}    
+\newcommand{\noncopynumber}[1]{
+	\BeginAccSupp{method=escape,ActualText={}}
+	#1
+	\EndAccSupp{}
+}
+\lstdefinestyle{Python}{
+	language        = Python,
+	backgroundcolor=\color{backcolour},
+	basicstyle      = \small\ttfamily,
+	keywordstyle    = \color{deepblue},
+	stringstyle     = \color{deepgreen},
+	commentstyle    = \color{codegray}\ttfamily,
+	numberstyle=\tiny\color{codegray}\noncopynumber,
+	columns=flexible,
+	numbers=left,
+	stepnumber=1
+}
+
+\ifodd\textwidth
+\addtolength{\textwidth}{1sp}
+\fi
+
+
+\title[RL for \LLf goals]{Reinforcement Learning for \LLf Goals}
+\author{Marco Favorito}
+\institute[DIAG at Sapienza, Rome]{M.Sc. in \\Engineering in Computer Science \\at Sapienza, University of Rome}
+\date{A.Y. 2018/2019}
+%Advisor: prof. Giuseppe De Giacomo
+
+\graphicspath{images/,images}
+
+
+\begin{document}
+
+\begin{frame}[t, plain]
+  \titlepage
+\end{frame}
+
+% Uncomment these lines for an automatically generated outline.
+%\begin{frame}{Outline}
+%  \tableofcontents
+%\end{frame}
+
+%\section{Introduction}
+
+\begin{frame}[allowframebreaks]{RL for \LLf goals: What is it?}
+	
+	\begin{itemize}
+		\item A joint work with:
+		\begin{itemize}
+			\item Giuseppe De Giacomo
+			\item Luca Iocchi
+			\item Fabio Patrizi
+		\end{itemize} 
+		\item The main topic of my M.Sc. thesis
+		\item Publication:
+		\begin{itemize}
+			\item De Giacomo, Giuseppe, et al. "Reinforcement Learning for LTLf/LDLf Goals." arXiv preprint arXiv:1807.06333 (2018).
+		\end{itemize}
+	\end{itemize}
+	\framebreak
+	It is a \textbf{Reinforcement Learning framework} that:
+	\begin{itemize}
+		\item Allows to specify temporal goals (in \LTLf or \LDLf)
+		\item Allows the RL agent to learn them
+	\end{itemize}
+	\vspace{0.3cm}
+	Advantages:
+	\begin{itemize}
+		\item The agent does not need to know the fluents
+		\item We can rely on off-the-shelf RL algorithms (Q-Learning, Sarsa, ...)
+		\item \textbf{Theorem}: the agent learns to do``the best" (in terms of rewards), given the \LLf constraints
+	\end{itemize}
+	
+	
+\end{frame}
+
+\begin{frame}{A Toy Example: \Sapientino}
+	
+	The robot \textbf{state space} $S = \{(x_1, y_1), (x_2, y_1), \dots\}$\\
+	\textbf{Fluents} $\F = \set{red, green, blue, pink,\dots}$\\
+	\textbf{Goal}: visit colors in a given order, e.g. $\tup{red, blue, green}$.\\
+	\LTLf formula $\varphi = \Diamond (red \land \Diamond (green \land \Diamond(blue)))$
+	\begin{center}
+	\includegraphics[width=0.45\textwidth]{images/sapientino-start}
+	\end{center}
+	
+	Notice that $\varphi$ is a \textbf{non-Markovian} goal/reward, i.e. \textbf{depends on a sequence of transitions}
+	
+\end{frame}
+
+
+
+\begin{frame}{RL for \LLf goals: a new problem}
+	
+	\textbf{Two-fold representation} of the world $\W$:
+	\begin{itemize}
+		\item An agent learning an MDP with \textbf{\emph{low-level} features} $S$, trying to optimize reward $R$
+		\item \LLf goals $\set{(\varphi_i, r_i)_{i=1}^m}$ over a set of \textbf{\emph{high-level} features} $\F$, yielding a set of fluents configurations $\L = 2^\F$
+	\end{itemize}
+	
+	\textbf{Solution}: a non-Markovian policy $\Policy: S^*\to A$ that is optimal wrt rewards $r_i$ and $R$.
+	
+	\begin{figure}
+		\includegraphics[width=0.75\textwidth]{images/rl-two-representations-no-borders}
+	\end{figure}
+	
+	%		Notice: we have to deal with a joint transition model:
+	%		\[Tr' = S \times \L \times A \to Prob(S, \L) \]
+	
+\end{frame}
+
+\begin{frame}
+	Our approach:
+	\begin{itemize}
+		\item Transform each $\varphi_i$ into \DFA $\automaton_{\varphi_i}$
+		\item Do RL over an MDP $\MDP'$ with a transformed state space:
+		\[S'= 
+		\tikz[baseline]{
+			\node[fill=yellow!20,anchor=base] (ts)
+			{$S$};
+		}
+		\times 
+		\tikz[baseline]{
+			\node[fill=blue!20,anchor=base] (tq)
+			{$Q_1 \times \dots \times Q_m$};
+		}
+		\]
+	\end{itemize}
+	
+	%	\begin{tikzpicture}
+	%	\end{tikzpicture}
+	
+	\begin{tikzpicture}
+	\node[anchor=south west,inner sep=0] at (0,0) {		\includegraphics[width=0.9\textwidth]{images/rl-two-representations-no-borders}};
+	%	\draw[red,ultra thick,rounded corners] (7.5,5.3) rectangle (9.4,6.2);
+	%	\node [draw=red, anchor=base] (sl) at (1.95,2.25) {};
+	\node [anchor=base] (sl) at (1.95,2.3) {};
+	\node [anchor=base] (ss) at (4.65, 3.8) {};
+	\node [anchor=base] (sq) at (4.65, 2.5) {};
+	\end{tikzpicture}
+	
+	%	\begin{figure}
+	%		\includegraphics[width=0.9\textwidth]{images/rl-two-representations-no-borders}
+	%	\end{figure}
+	Notice: \textbf{the agent ignores the fluents} \tikz[baseline]{\node[fill=red!20,anchor=base] (tl) {$\L$}}!\\
+	
+	
+	The actual RL relies on standard RL algorithms (e.g. Sarsa($\lambda$))
+	
+	% Now it's time to draw some edges between the global nodes. Note that we
+	% have to apply the 'overlay' style.
+	\begin{tikzpicture}[overlay]
+	\path[->]<1-> (ts) edge [bend left] (ss);
+	\path[->]<1-> (tq) edge [bend left] (sq);
+	\path[->]<1-> (tl) edge [bend right] (sl);
+	\end{tikzpicture}
+	
+\end{frame}
+
+
+\begin{frame}{An optimal policy for \Sapientino}
+	
+	\LTLf goal $\varphi = \Diamond (red \land \Diamond (green \land \Diamond(blue)))$\\
+	The equivalent \DFA is (roughly):
+	
+	\begin{center}
+		\includegraphics[width=\textwidth]{images//sapientino-simple-dfa-horizontal}
+	\end{center}
+	
+
+\end{frame}
+
+
+\begin{frame}{An optimal policy for \Sapientino}
+		\LTLf goal $\varphi = \Diamond (red \land \Diamond (green \land \Diamond(blue)))$, reward $r = 300$\\
+		\only<01>{Current state $s' = (x_4, y_3, 0)$}
+		\only<02>{Current state $s' = (x_4, y_2, 0)$}
+		\only<03>{Current state $s' = (x_5, y_2, 0)$}
+		\only<04>{Current state $s' = (x_6, y_2, 0)$}
+		\only<05>{Current state $s' = (x_7, y_2, 0)$}
+		\only<06>{Current state $s' = (x_7, y_2, 1)$, reward = +100 (reward shaping)}
+		\only<07>{Current state $s' = (x_6, y_2, 1)$}
+		\only<08>{Current state $s' = (x_6, y_3, 1)$}
+		\only<09>{Current state $s' = (x_6, y_3, 2)$, reward = +100 (reward shaping)}
+		\only<10>{Current state $s' = (x_6, y_4, 2)$}
+		\only<11>{Current state $s' = (x_7, y_4, 2)$}
+		\only<12>{Current state $s' = (x_7, y_5, 2)$}
+		\only<13>{Current state $s' = (x_7, y_5, 3)$, reward = $r - 200 = +100$}
+	\begin{table}
+		
+		\begin{tabular}{c c}
+			%\includegraphics[width=0.5\textwidth]{images//sapientino-start} &	
+			\includegraphics[width=0.6\textwidth]<01>{images//gifs/optimal-policy-three-colors/frame_00}
+			\includegraphics[width=0.6\textwidth]<02>{images//gifs/optimal-policy-three-colors/frame_01}
+			\includegraphics[width=0.6\textwidth]<03>{images//gifs/optimal-policy-three-colors/frame_02}
+			\includegraphics[width=0.6\textwidth]<04>{images//gifs/optimal-policy-three-colors/frame_03}
+			\includegraphics[width=0.6\textwidth]<05>{images//gifs/optimal-policy-three-colors/frame_04}
+			\includegraphics[width=0.6\textwidth]<06>{images//gifs/optimal-policy-three-colors/frame_05}
+			\includegraphics[width=0.6\textwidth]<07>{images//gifs/optimal-policy-three-colors/frame_06}
+			\includegraphics[width=0.6\textwidth]<08>{images//gifs/optimal-policy-three-colors/frame_07}
+			\includegraphics[width=0.6\textwidth]<09>{images//gifs/optimal-policy-three-colors/frame_08}
+			\includegraphics[width=0.6\textwidth]<10>{images//gifs/optimal-policy-three-colors/frame_09}
+			\includegraphics[width=0.6\textwidth]<11>{images//gifs/optimal-policy-three-colors/frame_10}
+			\includegraphics[width=0.6\textwidth]<12,13>{images//gifs/optimal-policy-three-colors/frame_11}
+			
+			\includegraphics[height=0.7\textheight]<01-05>{images//gifs/sapientino-simple-dfa/sapientino-simple-dfa-0}
+			\includegraphics[height=0.7\textheight]<06-08>{images//gifs/sapientino-simple-dfa/sapientino-simple-dfa-1}
+			\includegraphics[height=0.7\textheight]<09-12>{images//gifs/sapientino-simple-dfa/sapientino-simple-dfa-2}
+			\includegraphics[height=0.7\textheight]<13>{images//gifs/sapientino-simple-dfa/sapientino-simple-dfa-3}
+			\end{tabular}
+	\end{table}
+	
+	
+\end{frame}
+\begin{frame}{Discussion about \Sapientino example}
+	
+	\textbf{Crucial remark}: the agent doesn't know \textbf{anything} about fluents!
+	\begin{itemize}
+		\item He is aware that "something changes" (automaton transitions)
+		\item Thanks to \emph{reward shaping}, he knows if it is a \emph{good/bad} transition
+	\end{itemize}
+	
+	\vspace{1cm}
+	\textbf{High expressive power}:
+	\begin{itemize}
+	\item Many different goals and constraints, e.g. exactly two visit per color in a given order, no bad visits in the meanwhile...
+	
+	\item We can use also \LDLf, expressive as \MSO (i.e. regular expressions)
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}{About the two-fold representation}
+	\textbf{Notice}: it seems that the agent \textbf{implicitly} learns where are the \emph{colors}, by knowing the \emph{coordinates}.\\
+	
+	However, the correlation between these representations does not need to be formalized.\\
+	
+	\vspace{0.3cm}
+	Denoting with $\F$ and $\S$ the set of \textbf{high-level features} and \textbf{low-level features}, respectively:
+	
+	\begin{block}{Question 1}
+		Is $\S$ minimal (or ``expressive enough'') wrt $\F$?
+	\end{block}
+	
+	\begin{block}{Question 2}
+		What is the relationship b/w $\S$ and $\F$ to be satisfied, in order to allow the agent to accomplish the high-level tasks?
+	\end{block}
+
+\end{frame}
+\begin{frame}{About the two-fold representation}
+	Answer: our approach makes no assumption about how the world works, hence we cannot give a general answer to these questions.\\
+	
+	\begin{itemize}
+		\item The relationship b/w $\S$ and $\F$ is \textbf{highly environment-dependent}. One should restrict the set of worlds of interest and try to make some assumption.
+		
+	\end{itemize}
+	
+	\textbf{Na\"ive solution}: put in $\S$ as much features as the designer consider useful, and run some feature selection techniques to cope with the complexity (e.g. by using Deep Learning)
+	
+	Famous examples:
+	\begin{itemize}
+		\item Mnih et al. 2015. \emph{Human-level control through deep reinforcement learning}. Nature 518(7540):529–533.
+		\item Silver et al. 2017. \emph{Mastering the game of go without human knowledge}. Nature 550:354–359
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{\emph{Restraining Bolts}}
+	\url{https://www.starwars.com/databank/restraining-bolt}
+	\begin{center}
+	\includegraphics[width=\textwidth]{images//restraining-bolt}
+	\end{center}
+
+\end{frame}
+
+\begin{frame}{\emph{Restraining Bolts}}
+	
+	Two distinct representations of the world:
+	\begin{itemize}
+		\item one by the agent, used for interacting with the world
+		\item one by the \textbf{authority} imposing the bolt.
+	\end{itemize}
+	
+	\vspace{0.3cm}
+	With our approach, the agent must conform the restraining rules even if these are not expressed in its original	representation.\\
+	
+	The agent can learn to act while conforming (as much as possible) to the \LLf specifications.\\
+	
+	\vspace{0.3cm}
+	Our work would be to apply this concept to many different applications and scenarios.\\
+	
+\end{frame}
+
+\begin{frame}
+	
+\end{frame}
+		
+	
+	
+	
+	
+
+
+\end{document}
