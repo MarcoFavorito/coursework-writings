@@ -1,0 +1,14 @@
+digraph {
+	fake [style=invisible]
+	0 [root=true, style="filled", fillcolor="red"]
+	1 [style="filled", fillcolor="red"]
+	2
+	3 [shape=doublecircle]
+	fake -> 0 [style=bold]
+	0 -> 0 [label="{}"]
+	0 -> 1 [label="{red}" color="red"]
+	1 -> 2 [label="{green}"]
+	1 -> 1 [label="{}"]
+	2 -> 2 [label="{}"]
+	2 -> 3 [label="{blue}"]
+}
