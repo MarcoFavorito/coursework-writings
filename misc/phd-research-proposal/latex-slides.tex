@@ -102,7 +102,7 @@
 
 \title[RL for \LLf goals]{Reinforcement Learning for \LLf Goals}
 \author{Marco Favorito}
-\institute[DIAG at Sapienza, Rome]{M.Sc. in \\Engineering in Computer Science \\at Sapienza, University of Rome}
+\institute[DIAG at Sapienza, Rome]{Ph.D. Candidate Student in \\Engineering in Computer Science \\at Sapienza, University of Rome}
 \date{A.Y. 2018/2019}
 %Advisor: prof. Giuseppe De Giacomo
 
@@ -134,7 +134,8 @@
 		\item The main topic of my M.Sc. thesis
 		\item Publication:
 		\begin{itemize}
-			\item De Giacomo, Giuseppe, et al. "Reinforcement Learning for LTLf/LDLf Goals." arXiv preprint arXiv:1807.06333 (2018).
+			\item De Giacomo, Iocchi, Favorito, Patrizi, ``Reinforcement Learning for \LLf Goals". arXiv preprint arXiv:1807.06333 (2018).
+			\item De Giacomo, Iocchi, Favorito, Patrizi, ``Learning Robot Tasks with \LLf Goals". Cognitive Robotic Workshop 2018
 		\end{itemize}
 	\end{itemize}
 	\framebreak
@@ -504,10 +505,33 @@
 		
 		\item \textbf{Multi-agent systems}: extend the approach to multi-agent systems (e.g. automaton for common goal, shared high-level representation)
 	\end{itemize}
-	
-	
 		
+\end{frame}
+
+\begin{frame}{Reward Shaping improvements}
+	Our system employs the use of (potential-based) reward shaping to facilitate the exploration, i.e.:
 	
+	Rewards are computed by simply split total rewards proportionally.
+	
+	\begin{center}
+		\includegraphics[width=\textwidth]{images/sapientino-simple-dfa-horizontal-with-potentials}
+	\end{center}
+	
+	Reward shaping reduces to find a \emph{potential function} $\Phi(s):\S \to \mathbb{R}$. Guarantee of policy invariance (Ng et al., 1999)
+\end{frame}
+
+\begin{frame}{Reward Shaping improvements}
+	Drawbacks of ``static" RS:
+	\begin{itemize}
+		\item \textbf{Fixed rewards}: potentials do not change according to the environment changes
+		\item \textbf{Arbitrary rewards}: shaping rewards do not reflect the true ``hardness" an automaton transitions
+	\end{itemize}
+	
+	Solutions:
+	\begin{itemize}
+		\item Employ \textbf{different rewards assignment schemes} (e.g. inverse proportion, attenuation factors)
+		\item ``Shaping shaping rewards": update shaping rewards \emph{dynamically}, during the learning process, \textbf{proportionally to the \emph{hardness}} of the transitions (we should define \emph{hardness}...)
+	\end{itemize}
 \end{frame}
 	
 \begin{frame}{Miscellaneous}
@@ -521,11 +545,15 @@
 \end{frame}
 
 \begin{frame}{Summary}
-		Improvements and extensions of ``\emph{RL for \LLf goals}"
+		Improvements and extensions of ``\emph{RL for \LLf goals}".
 		
 		\vspace{0.5cm}
 		
-		More generally, in the middle of logic-based (i.e. Planning and Reasoning) and learning-based (i.e. Reinforcement Learning) approaches.
+		Experiments, experiments, experiments.
+		
+		\vspace{0.5cm}
+		
+		More generally, working in the middle of logic-based (i.e. Planning and Reasoning) and learning-based (i.e. Reinforcement Learning) approaches.
 	
 \end{frame}
 
