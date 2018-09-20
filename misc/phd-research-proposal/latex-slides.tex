@@ -297,6 +297,28 @@
 	
 	
 \end{frame}
+
+\begin{frame}{Another example: \Breakout}
+	\Breakout: remove columns/rows in a given order
+	\begin{itemize}
+		\item \textbf{low-level features}: paddle position, ball speed/position;
+		\item \textbf{high-level features}: bricks status (broken/not broken)
+		\item \textbf{\LLf goal} ($l_i$ means: the $i_{th}$ line has been removed.):
+		\[\DIAM{(\lnot l_0 \lAND \lnot l_1 \lAND \lnot l_2)^*;(l_0 \lAND \lnot l_1 \lAND \lnot l_2);(l_0 \lAND \lnot l_1 \lAND \lnot l_2)^*;\dots;(l_0 \lAND l_1 \lAND l_2)}tt\]
+	\end{itemize}
+
+	\begin{table}
+		\centering
+		\begin{tabular}{c c}
+			\includegraphics[width=.35\textwidth]{images/breakout.png} &
+			\movie[height = 3.5cm, width = 4cm, showcontrols,	poster]{}{breakout-left-right.avi}
+		\end{tabular}
+	\end{table}
+	
+	
+\end{frame}
+
+
 \begin{frame}{Discussion about \Sapientino example}
 	
 	\textbf{Crucial remark}: the agent doesn't know \textbf{anything} about fluents!
@@ -508,14 +530,16 @@
 		
 \end{frame}
 
-\begin{frame}{Reward Shaping improvements}
-	Our system employs the use of (potential-based) reward shaping to facilitate the exploration, i.e.:
-	
-	Rewards are computed by simply split total rewards proportionally.
+\begin{frame}{Reward Shaping: how we applied it}
+	Our system employs the use of (potential-based) reward shaping to facilitate the exploration.
 	
 	\begin{center}
 		\includegraphics[width=\textwidth]{images/sapientino-simple-dfa-horizontal-with-potentials}
 	\end{center}
+	
+	Shaping rewards are computed by simply splitting total reward.\\
+	
+	\vspace{0.3cm}
 	
 	Reward shaping reduces to find a \emph{potential function} $\Phi(s):\S \to \mathbb{R}$. Guarantee of policy invariance (Ng et al., 1999)
 \end{frame}
@@ -530,7 +554,7 @@
 	Solutions:
 	\begin{itemize}
 		\item Employ \textbf{different rewards assignment schemes} (e.g. inverse proportion, attenuation factors)
-		\item ``Shaping shaping rewards": update shaping rewards \emph{dynamically}, during the learning process, \textbf{proportionally to the \emph{hardness}} of the transitions (we should define \emph{hardness}...)
+		\item Learn Shaping Rewards: update shaping rewards \emph{dynamically}, during the learning process, \textbf{proportionally to the \emph{hardness}} of the transitions (we should define \emph{hardness}...)
 	\end{itemize}
 \end{frame}
 	
