@@ -132,7 +132,7 @@
 			\item Fabio Patrizi
 		\end{itemize} 
 		\item The main topic of my M.Sc. thesis
-		\item Publication:
+		\item Publications:
 		\begin{itemize}
 			\item De Giacomo, Iocchi, Favorito, Patrizi, ``Reinforcement Learning for \LLf Goals". arXiv preprint arXiv:1807.06333 (2018).
 			\item De Giacomo, Iocchi, Favorito, Patrizi, ``Learning Robot Tasks with \LLf Goals". Cognitive Robotic Workshop 2018
@@ -158,7 +158,7 @@
 \begin{frame}{A Toy Example: \Sapientino}
 	
 	The robot \textbf{state space} $S = \{(x_1, y_1), (x_2, y_1), \dots\}$\\
-	\textbf{Fluents} $\F = \set{red, green, blue, pink,\dots}$\\
+	\textbf{Fluents} $\L = \set{red, green, blue, pink,\dots}$\\
 	\textbf{Goal}: visit colors in a given order, e.g. $\tup{red, blue, green}$.\\
 	\LTLf formula $\varphi = \Diamond (red \land \Diamond (green \land \Diamond(blue)))$
 	\begin{center}
@@ -354,7 +354,7 @@
 \begin{frame}{About the two-fold representation}
 	
 	
-	\textbf{Na\"ive solution}: put in $\S$ as much features as the designer consider useful, and run some feature selection techniques to cope with the complexity (e.g. by using Deep Learning)
+	\textbf{Na\"ive solution}: put in $\S$ as many features as the designer consider useful, and run some feature selection techniques to cope with the complexity (e.g. by using Deep Learning)
 	
 	Famous examples:
 	\begin{itemize}
@@ -394,7 +394,7 @@
 	Our work would be to apply this concept to many different applications and scenarios.\\
 	
 	\vspace{0.3cm}
-	The concept of safety guarantees is a hot-topic and is of crucial importance in AI.
+	The concept of safety guarantees is a hot topic and is of crucial importance in AI.
 	\begin{itemize}
 		\item Hadfield-Menell, Dylan, et al. \emph{The off-switch game.} arXiv preprint arXiv:1611.08219 (2016).
 		\item Amodei, Dario, et al. \emph{Concrete problems in AI safety.} arXiv preprint arXiv:1606.06565 (2016).
@@ -422,7 +422,7 @@
 
 \begin{frame}{Ad-hoc RL algorithms: Options}
 	
-	In our framework, \textbf{options might be associated to automata transition(s), or even the entire automata}.
+	In our framework, \textbf{options might be associated with automata transition(s), or even the entire automata}.
 	
 	E.g. in the previous example with \Sapientino:
 	\begin{itemize}
@@ -462,7 +462,7 @@
 
 \begin{frame}{Ad-hoc RL algorithms: Improve Exploration}
 	\begin{itemize}
-		\item Improve exploration (e.g. O-MCTS. M. de Waard et al., 2016).\\ In other words, focus on next good \DFA state.
+		\item Improve exploration (e.g. O-MCTS. M. de Waard et al., 2016).\\ In other words, focus on the next good \DFA state.
 			
 			\begin{center}
 			\includegraphics[width=0.7\textwidth]{images/o-mcts}
@@ -489,7 +489,7 @@
 \begin{frame}{Ad-hoc RL algorithms: other ideas}
 
 	\begin{itemize}
-		\item \textbf{Curriculum Learning}: focus the learning on small part of a single automaton rather than the every automaton in its entirety
+		\item \textbf{Curriculum Learning}: focus the learning on a small part of a single automaton rather than every automaton in its entirety
 		\item \textbf{Manifold representations}: Why only two representations? Generalize the approach to arbitrarily nested (high) representations:
 		
 		\begin{table}
